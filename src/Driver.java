@@ -1,3 +1,5 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
@@ -26,7 +28,31 @@ public class Driver {
     public static void main(String[] args) throws IOException {
 
 
+        Scanner consoleScanner = new Scanner(System.in);
+        boolean validInput = false;
+        double estimatedValue = 0;
         int value = 3;
+
+        do{
+            try{
+                System.out.print("Enter a positive integer: ");
+                value = consoleScanner.nextInt();
+                validInput = true;
+                if(value <= 0) {
+                    validInput = false;
+                    System.out.println("Please enter a positive integer.");
+                }
+            }catch (InputMismatchException e)
+            {
+                consoleScanner.nextLine();
+                validInput = false;
+                System.out.println("Please enter an integer.");
+            }
+        }while(!validInput);
+
+        consoleScanner.close();
+
+        System.out.println("Please do not close the program while the graph is being generated.");
 
         recursiveThreePlusOne(value);
 
@@ -52,6 +78,9 @@ public class Driver {
         String fileName = "Collatz Conjecture Graph for Value " + value + ".png";
 
         ChartUtils.saveChartAsPNG(new File(fileName), scatterPlot, 600, 400);
+
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println("Graph is complete.");
 
     }
 
